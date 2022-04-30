@@ -40,6 +40,8 @@ int main()
 
     Enemy *enemies[]{&goblin, &slime};
 
+    bool enemiesDead{false};
+
     for (auto enemy : enemies)
     {
         enemy->setTarget(&knight);
@@ -80,9 +82,24 @@ int main()
         }
         else // Knight is alive
         {
-            std::string knightHealth{"HP: "};
-            knightHealth.append(std::to_string(knight.getHealth()), 0, 3);
-            DrawText(knightHealth.c_str(), 55.f, 45.f, 40, RED);
+            int enemiesDead{};
+            for (auto enemy : enemies)
+            {
+                if (!enemy->getAlive())
+                    enemiesDead++;
+            }
+
+            if (enemiesDead >= 2)
+            {
+                DrawText("You Win!", 55.f, 45.f, 40, RED);
+            }
+
+            else
+            {
+                std::string knightHealth{"HP: "};
+                knightHealth.append(std::to_string(knight.getHealth()), 0, 3);
+                DrawText(knightHealth.c_str(), 55.f, 45.f, 40, RED);
+            }
         }
 
         knight.tick(GetFrameTime());
